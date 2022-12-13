@@ -8,9 +8,10 @@
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
+    <p class="tofind">{{.Word}}</p>
     <p class="tofind" >{{.ToFind}}</p>
     <p class="attemps" >Vous avez {{.Attemps}} essais restants</p>
-    <form method="post">
+    <form action="/" method="get">
         <input type="text" name="letter" placeholder="Entrez une lettre" required>
         <input type="submit" value="Valider">
     </form>

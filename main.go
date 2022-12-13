@@ -2,6 +2,7 @@ package main
 
 import (
 	fonctions "HANGMAN_WEB_BURLE_CRAYSTON_LIERE/Hangman/fonctions"
+	"fmt"
 	"html/template"
 	"net/http"
 )
@@ -17,10 +18,28 @@ func main() {
 	http.Handle("/css/", http.StripPrefix("/css/", fs))
 	tmpl := template.Must(template.ParseFiles("index.html"))
 	data := Hangman{
+		Word:    fonctions.RandomWord(),
 		ToFind:  fonctions.RevealLetter(fonctions.RandomWord()),
 		Attemps: 10,
 	}
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+
+		input := r.FormValue("letter")
+		if fonctions.VerifyLetter(input, data.ToFind) && len(input) == 1 {
+			data.Attemps--
+		}
+		var indexes []int
+		for index, letter := range data.Word {
+			if input == string(letter) {
+				fmt.Println("ok")
+				if fonctions.VerifyIndex(indexes, index) {
+					indexes = append(indexes, index)
+				}
+			}
+		}
+		for _, index := range indexes {
+			data.ToFind = fonctions.Replace(data.ToFind, input, index)
+		}
 		tmpl.Execute(w, data)
 	})
 	http.ListenAndServe(":80", nil)
