@@ -13,7 +13,7 @@ func RevealLetter(word string) string {
 		if string(letter) == letter1 {
 			new_word += string(letter)
 		} else {
-			new_word += "_"
+			new_word += "_" + ""
 		}
 
 	}

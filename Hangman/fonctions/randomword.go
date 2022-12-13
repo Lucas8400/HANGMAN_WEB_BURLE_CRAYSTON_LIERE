@@ -8,7 +8,7 @@ import (
 )
 
 func RandomWord() string {
-	readFile, err := os.Open("words.txt")
+	readFile, err := os.Open("./Hangman/words.txt")
 	if err != nil {
 		panic(err)
 	}

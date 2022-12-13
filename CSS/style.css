@@ -4,8 +4,17 @@ body{
     justify-content: center;
     align-items: center;
     height: 90vh;
+    flex-direction: column;
 }
 
-h1{
+.tofind{
     color: white;
+    letter-spacing: 20px;
+    font-size: 100px;
+    font-weight: bold;
+}
+
+.attemps{
+    color: white;
+    font-size: 30px;
 }
