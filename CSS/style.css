@@ -1,0 +1,11 @@
+body{
+    background-color: rgb(30, 28, 28);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+h1{
+    color: white;
+}
