@@ -18,3 +18,9 @@ body{
     color: white;
     font-size: 30px;
 }
+
+.victory{
+    color: white;
+    font-size: 60px;
+    font-weight: bold;
+}

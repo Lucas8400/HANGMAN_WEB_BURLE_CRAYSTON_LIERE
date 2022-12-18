@@ -17,6 +17,7 @@ func main() {
 	fs := http.FileServer(http.Dir("css"))
 	http.Handle("/css/", http.StripPrefix("/css/", fs))
 	tmpl := template.Must(template.ParseFiles("index.html"))
+	tmpl1 := template.Must(template.ParseFiles("victory.html"))
 	data := Hangman{
 		Word:    fonctions.RandomWord(),
 		ToFind:  fonctions.RevealLetter(fonctions.RandomWord()),
@@ -25,13 +26,12 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 
 		input := r.FormValue("letter")
-		if fonctions.VerifyLetter(input, data.ToFind) && len(input) == 1 {
+		if fonctions.VerifyLetter(input, data.Word) && len(input) == 1 {
 			data.Attemps--
 		}
 		var indexes []int
 		for index, letter := range data.Word {
 			if input == string(letter) {
-				fmt.Println("ok")
 				if fonctions.VerifyIndex(indexes, index) {
 					indexes = append(indexes, index)
 				}
@@ -40,7 +40,25 @@ func main() {
 		for _, index := range indexes {
 			data.ToFind = fonctions.Replace(data.ToFind, input, index)
 		}
+		if data.Attemps == 0 {
+			fmt.Println("Vous avez perdu, le mot était:")
+		}
+		if data.ToFind == data.Word {
+			http.Redirect(w, r, "/victory", http.StatusFound)
+			return
+		}
 		tmpl.Execute(w, data)
 	})
+
+	http.HandleFunc("/victory", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPost {
+			http.Redirect(w, r, "/", http.StatusFound)
+			data.Word = fonctions.RandomWord()
+			data.ToFind = fonctions.RevealLetter(fonctions.RandomWord())
+			data.Attemps = 10
+		}
+		tmpl1.Execute(w, data)
+	})
+
 	http.ListenAndServe(":80", nil)
 }
