@@ -8,6 +8,7 @@ body{
 }
 
 .tofind{
+    font-family: Arial, Helvetica, sans-serif;
     color: white;
     letter-spacing: 20px;
     font-size: 100px;
@@ -20,7 +21,22 @@ body{
 }
 
 .victory{
+    font-family: Arial, Helvetica, sans-serif;
     color: white;
     font-size: 60px;
+    font-weight: bold;
+}
+
+.current-user{
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    font-size: 30px;
+    font-weight: bold; 
+}
+
+p{
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    font-size: 30px;
     font-weight: bold;
 }
