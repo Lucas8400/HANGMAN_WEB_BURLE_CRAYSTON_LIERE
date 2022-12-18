@@ -18,6 +18,7 @@ func main() {
 	http.Handle("/css/", http.StripPrefix("/css/", fs))
 	tmpl := template.Must(template.ParseFiles("index.html"))
 	tmpl1 := template.Must(template.ParseFiles("victory.html"))
+	tmpl2 := template.Must(template.ParseFiles("defeat.html"))
 	data := Hangman{
 		Word:    fonctions.RandomWord(),
 		ToFind:  fonctions.RevealLetter(fonctions.RandomWord()),
@@ -47,6 +48,10 @@ func main() {
 			http.Redirect(w, r, "/victory", http.StatusFound)
 			return
 		}
+		if data.Attemps == 0 {
+			http.Redirect(w, r, "/defeat", http.StatusFound)
+			return
+		}
 		tmpl.Execute(w, data)
 	})
 
@@ -58,6 +63,16 @@ func main() {
 			data.Attemps = 10
 		}
 		tmpl1.Execute(w, data)
+	})
+
+	http.HandleFunc("/defeat", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPost {
+			http.Redirect(w, r, "/", http.StatusFound)
+			data.Word = fonctions.RandomWord()
+			data.ToFind = fonctions.RevealLetter(fonctions.RandomWord())
+			data.Attemps = 10
+		}
+		tmpl2.Execute(w, data)
 	})
 
 	http.ListenAndServe(":80", nil)
